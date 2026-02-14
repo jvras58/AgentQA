@@ -73,7 +73,7 @@ O projeto inclui configurações Docker para rodar os modelos Ollama em contêin
 #### Passos para Executar com Docker
 1. **Construa e inicie os serviços Ollama**:
    ```bash
-   docker-compose up --build
+   docker compose up --build
    ```
    Isso criará dois contêineres:
    - `llama-service`: Modelo LLM (`llama3.1`) na porta 11434.
