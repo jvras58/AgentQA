@@ -14,7 +14,7 @@ def get_knowledge_base() -> Knowledge:
             table_name=settings.vector_db_table,
             uri=settings.vector_db_uri,
             embedder=OllamaEmbedder(
-                id=settings.embedder_model, dimensions=settings.embedder_dims
+                id=settings.embedder_model, dimensions=settings.embedder_dims, host=settings.embedder_host, port=settings.embedder_port
             ),
         )
     )

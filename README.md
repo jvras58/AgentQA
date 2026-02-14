@@ -13,11 +13,12 @@ Sistema de Perguntas e Respostas (QA) com IA utilizando **RAG (Retrieval-Augment
 
 ### Pré-requisitos
 - [uv](https://github.com/astral-sh/uv) para gerenciamento de pacotes.
-- [Ollama](https://ollama.ai/) rodando com os modelos:
+- **Para execução local**: [Ollama](https://ollama.ai/) rodando com os modelos:
   - `llama3.1` (LLM)
   - `nomic-embed-text` (Embeddings)
+- **Para execução com Docker** (opcional): [Docker](https://www.docker.com/) e [Docker Compose](https://docs.docker.com/compose/).
 
-Verifique se o Ollama está rodando e tem os modelos:
+Verifique se o Ollama está rodando e tem os modelos (para execução local):
 ```bash
 ollama list
 ```
@@ -38,11 +39,16 @@ Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
 ```env
 LLM_MODEL=llama3.1
 EMBEDDER_MODEL=nomic-embed-text
+OLLAMA_HOST=localhost
+OLLAMA_PORT=11434
+EMBEDDER_HOST=localhost
+EMBEDDER_PORT=11435
 ENABLE_WEB_SEARCH=true
 ```
 
 ## 🚀 Como Executar
 
+### Opção 1: Execução Local (Recomendado para Desenvolvimento)
 Para iniciar a CLI interativa:
 ```bash
 uv run python -m src.main
@@ -57,6 +63,38 @@ Para uma pergunta direta via terminal:
 ```bash
 uv run python -m src.main --ask "Qual a capital da França?"
 ```
+
+### Opção 2: Execução com Docker (Para Produção ou Isolamento)
+O projeto inclui configurações Docker para rodar os modelos Ollama em contêineres isolados.
+
+#### Pré-requisitos para Docker
+- [Docker](https://www.docker.com/) e [Docker Compose](https://docs.docker.com/compose/) instalados.
+
+#### Passos para Executar com Docker
+1. **Construa e inicie os serviços Ollama**:
+   ```bash
+   docker-compose up --build
+   ```
+   Isso criará dois contêineres:
+   - `llama-service`: Modelo LLM (`llama3.1`) na porta 11434.
+   - `embed-service`: Modelo de embeddings (`nomic-embed-text`) na porta 11435.
+
+2. **Configure o `.env` para Docker**:
+   Edite o `.env` para apontar para os nomes dos serviços na rede Docker:
+   ```env
+   OLLAMA_HOST=llama-service
+   OLLAMA_PORT=11434
+   EMBEDDER_HOST=embed-service
+   EMBEDDER_PORT=11434  # Porta interna dos contêineres
+   ```
+
+3. **Execute a aplicação**:
+   Com os contêineres rodando em background, execute a aplicação localmente:
+   ```bash
+   uv run python -m src.main --seed
+   ```
+
+**Nota**: Os modelos são baixados durante a construção das imagens, o que pode levar tempo na primeira execução. Para parar os contêineres: `docker-compose down`.
 
 ## 📝 Comandos na CLI
 

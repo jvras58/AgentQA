@@ -1,0 +1,16 @@
+services:
+  llama-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.llama
+    ports:
+      - "11434:11434"
+    container_name: llama-container
+
+  embed-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.embed
+    ports:
+      - "11435:11434"
+    container_name: embed-container

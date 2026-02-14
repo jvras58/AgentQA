@@ -15,6 +15,12 @@ class Settings(BaseSettings):
     embedder_model: str = "nomic-embed-text"
     embedder_dims: int = 768
 
+    # Ollama hosts/ports
+    ollama_host: str = "localhost"
+    ollama_port: int = 11434
+    embedder_host: str = "localhost"
+    embedder_port: int = 11435  # Porta diferente para o embedder
+
     # Vector DB (LanceDB)
     vector_db_uri: str = str(BASE_DIR / "tmp" / "lancedb")
     vector_db_table: str = "docs"
