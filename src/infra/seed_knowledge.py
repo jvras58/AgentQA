@@ -13,5 +13,5 @@ def seed_knowledge(kb: Knowledge) -> None:
 
 
 def add_document(kb: Knowledge, text: str) -> None:
-    """Adiciona um único documento à base."""
+    """Adiciona um único documento txt à base."""
     kb.insert(text_content=text)

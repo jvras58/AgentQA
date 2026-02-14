@@ -1,8 +1,9 @@
 from agno.agent import Agent
+from agno.db.sqlite import SqliteDb
 from agno.models.ollama import Ollama
 from agno.tools.duckduckgo import DuckDuckGoTools
-from agno.db.sqlite import SqliteDb
-from agent_qa.core.config import settings
+
+from src.core.config import settings
 
 
 class AgentService:

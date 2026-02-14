@@ -1,7 +1,8 @@
-from agno.knowledge.knowledge import Knowledge
 from agno.knowledge.embedder.ollama import OllamaEmbedder
+from agno.knowledge.knowledge import Knowledge
 from agno.vectordb.lancedb import LanceDb
-from agent_qa.core.config import settings
+
+from src.core.config import settings
 
 
 def get_knowledge_base() -> Knowledge:

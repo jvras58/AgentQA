@@ -1,8 +1,9 @@
 import argparse
-from agent_qa.infra.knowledge import get_knowledge_base
-from agent_qa.infra.seed_knowledge import seed_knowledge
-from agent_qa.services.agent_service import AgentService
-from agent_qa.ui.cli import run_interactive
+
+from src.infra.knowledge import get_knowledge_base
+from src.infra.seed_knowledge import seed_knowledge
+from src.services.agent_service import AgentService
+from src.ui.cli import run_interactive
 
 
 def main():
