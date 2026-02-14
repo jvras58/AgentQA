@@ -15,3 +15,7 @@ def get_knowledge_base() -> Knowledge:
             ),
         )
     )
+
+def add_document(kb: Knowledge, text: str) -> None:
+    """Adiciona um único documento txt à base."""
+    kb.insert(text_content=text)

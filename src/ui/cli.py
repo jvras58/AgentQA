@@ -9,7 +9,7 @@ Permite ao usuário:
 from agno.agent import Agent
 from agno.knowledge.knowledge import Knowledge
 
-from src.infra.seed_knowledge import add_document
+from src.infra.knowledge import add_document
 
 # ── Constantes de UI ─────────────────────────────────────────────────────────
 BANNER = """
