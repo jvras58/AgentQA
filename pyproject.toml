@@ -9,8 +9,12 @@ dependencies = [
     "ddgs>=9.10.0",
     "lancedb>=0.29.2",
     "openai>=2.21.0",
+    "pydantic-settings>=2.12.0",
     "sqlalchemy>=2.0.46",
 ]
 
 [project.scripts]
-agentqa = "main:main"
+agentqa = "agent_qa.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

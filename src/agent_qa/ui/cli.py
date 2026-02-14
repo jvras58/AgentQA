@@ -9,7 +9,8 @@ Permite ao usuário:
 from agno.agent import Agent
 from agno.knowledge.knowledge import Knowledge
 
-from agent_qa.knowledge import add_document
+
+from agent_qa.infra.seed_knowledge import add_document
 
 # ── Constantes de UI ─────────────────────────────────────────────────────────
 BANNER = """
@@ -74,12 +75,7 @@ def _handle_add(args: str, kb: Knowledge) -> None:
 
 
 def run_interactive(agent: Agent, kb: Knowledge) -> None:
-    """Loop principal da CLI interativa.
-
-    Args:
-        agent: Instância do agente QA.
-        kb: Base de conhecimento (para inserção de docs via input).
-    """
+    """Loop principal da CLI interativa."""
     print(BANNER)
 
     while True:

@@ -1,0 +1,16 @@
+from agno.knowledge.knowledge import Knowledge
+from agno.knowledge.embedder.ollama import OllamaEmbedder
+from agno.vectordb.lancedb import LanceDb
+from agent_qa.core.config import settings
+
+
+def get_knowledge_base() -> Knowledge:
+    return Knowledge(
+        vector_db=LanceDb(
+            table_name=settings.vector_db_table,
+            uri=settings.vector_db_uri,
+            embedder=OllamaEmbedder(
+                id=settings.embedder_model, dimensions=settings.embedder_dims
+            ),
+        )
+    )

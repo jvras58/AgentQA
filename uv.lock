@@ -15,6 +15,7 @@ dependencies = [
     { name = "ddgs" },
     { name = "lancedb" },
     { name = "openai" },
+    { name = "pydantic-settings" },
     { name = "sqlalchemy" },
 ]
 
@@ -24,6 +25,7 @@ requires-dist = [
     { name = "ddgs", specifier = ">=9.10.0" },
     { name = "lancedb", specifier = ">=0.29.2" },
     { name = "openai", specifier = ">=2.21.0" },
+    { name = "pydantic-settings", specifier = ">=2.12.0" },
     { name = "sqlalchemy", specifier = ">=2.0.46" },
 ]
 
