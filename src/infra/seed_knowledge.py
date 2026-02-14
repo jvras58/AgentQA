@@ -1,3 +1,5 @@
+"""Módulo para popular a base de conhecimento com dados iniciais de exemplo."""
+
 from agno.knowledge.knowledge import Knowledge
 
 

@@ -1,3 +1,8 @@
+"""Ponto de entrada principal para a aplicação AgentQA. Este módulo é responsável por
+inicializar a base de conhecimento, configurar o agente
+e iniciar a interface de usuário interativa
+ou processar perguntas diretamente da linha de comando.
+"""
 import argparse
 
 from src.infra.knowledge import get_knowledge_base
@@ -7,6 +12,7 @@ from src.ui.cli import run_interactive
 
 
 def main():
+    """Ponto de entrada principal para a aplicação AgentQA."""
     parser = argparse.ArgumentParser(description="AgentQA CLI")
     parser.add_argument("--seed", action="store_true")
     parser.add_argument("--ask", type=str)

@@ -1,5 +1,10 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
+"""Módulo de configuração central para a aplicação AgentQA.
+Define as configurações para LLM, embeddings, banco de dados vetorial,
+memória e recursos adicionais. Utiliza Pydantic para gerenciamento de configurações"""
+
 from pathlib import Path
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 
