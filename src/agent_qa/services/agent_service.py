@@ -16,6 +16,7 @@ class AgentService:
             model=Ollama(id=settings.llm_model),
             tools=tools,
             knowledge=self.kb,
+            search_knowledge=True,
             db=SqliteDb(db_file=settings.memory_db_path),
             add_history_to_context=True,
             num_history_runs=settings.history_runs,
