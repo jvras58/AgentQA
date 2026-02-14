@@ -1,0 +1,13 @@
+[project]
+name = "agentqa"
+version = "0.1.0"
+description = "AgentQA: building and evaluating agent-based question answering systems.1"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "agno[ollama]>=2.5.0",
+    "ddgs>=9.10.0",
+    "lancedb>=0.29.2",
+    "openai>=2.21.0",
+    "sqlalchemy>=2.0.46",
+]
