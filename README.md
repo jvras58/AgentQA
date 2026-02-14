@@ -4,10 +4,10 @@ Sistema de Perguntas e Respostas (QA) com IA utilizando **RAG (Retrieval-Augment
 
 ## 📂 Estrutura de Pastas
 
-- `src/agent_qa/core/`: Configurações globais e validação de ambiente com **Pydantic Settings**.
-- `src/agent_qa/infra/`: Gerenciamento de persistência (LanceDB) e conhecimento.
-- `src/agent_qa/services/`: Lógica de construção e orquestração do Agente.
-- `src/agent_qa/ui/`: Interface de usuário (CLI interativa).
+- `src/core/`: Configurações globais e validação de ambiente com **Pydantic Settings**.
+- `src/infra/`: Gerenciamento de persistência (LanceDB) e conhecimento.
+- `src/services/`: Lógica de construção e orquestração do Agente.
+- `src/ui/`: Interface de usuário (CLI interativa).
 
 ## 🛠️ Instalação e Configuração
 
@@ -45,17 +45,17 @@ ENABLE_WEB_SEARCH=true
 
 Para iniciar a CLI interativa:
 ```bash
-uv run agentqa
+uv run python -m src.main
 ```
 
 Para carregar os dados de exemplo (seed) e iniciar:
 ```bash
-uv run agentqa --seed
+uv run python -m src.main --seed
 ```
 
 Para uma pergunta direta via terminal:
 ```bash
-uv run agentqa --ask "Qual a capital da França?"
+uv run python -m src.main --ask "Qual a capital da França?"
 ```
 
 ## 📝 Comandos na CLI
