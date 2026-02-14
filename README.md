@@ -1,53 +1,86 @@
-# AgentQA - POC de Sistema de Perguntas e Respostas com IA
+# AgentQA - Sistema de Perguntas e Respostas com IA
 
-Este é um projeto de prova de conceito (POC) para um sistema de perguntas e respostas baseado em documentos enviados para uma IA. Utiliza o framework [Agno](https://docs.agno.com/) para criar um agente inteligente com Retrieval-Augmented Generation (RAG), permitindo consultas sobre documentos armazenados em uma base de dados vetorial.
+Sistema de perguntas e respostas baseado em documentos com Retrieval-Augmented Generation (RAG), usando o framework [Agno](https://docs.agno.com/), modelos locais via Ollama e base vetorial LanceDB.
 
 ## Funcionalidades
 
-- **Agente QA com RAG**: O agente responde perguntas baseadas em documentos inseridos na base de conhecimento.
-- **Base Vetorial Local**: Usa LanceDB para armazenar embeddings de documentos, permitindo buscas eficientes.
-- **Embeddings Locais**: Utiliza Ollama com o modelo `nomic-embed-text` para gerar embeddings sem depender de APIs externas.
-- **Memória Persistente**: Histórico de conversas armazenado em SQLite.
-- **Ferramentas Opcionais**: Integração com DuckDuckGo para buscas na web (pode ser substituído por Brave Search).
+- **Agente QA com RAG**: Responde perguntas baseadas em documentos da base de conhecimento.
+- **CLI Interativa**: Faça perguntas e adicione documentos via texto diretamente no terminal.
+- **Base Vetorial Local**: LanceDB para armazenar embeddings sem precisar de servidor externo.
+- **Embeddings Locais**: Ollama + `nomic-embed-text` — sem dependência de APIs pagas.
+- **Memória Persistente**: Histórico de conversas em SQLite.
+- **Busca Web** (opcional): DuckDuckGo integrado.
+- **Configuração via Env Vars**: Todas as configs podem ser sobrescritas por variáveis de ambiente.
 
 ## Pré-requisitos
 
-1. **Python**: Versão 3.8 ou superior.
-2. **Ollama**: Instale o [Ollama](https://ollama.com/) e baixe os modelos necessários:
-   - `ollama pull llama3.1` (para o modelo principal)
-   - `ollama pull nomic-embed-text` (para embeddings)
-3. **Dependências**: Instale as bibliotecas via `pip` ou `uv`:
+1. **Python** ≥ 3.12
+2. **Ollama** instalado ([ollama.com](https://ollama.com/)):
+   ```bash
+   ollama pull llama3.1          # LLM principal
+   ollama pull nomic-embed-text  # Embeddings
    ```
-   pip install agno
-   ```
-   Ou usando `uv` se preferir:
-   ```
-   uv add agno
-   ```
+3. **uv** (recomendado) ou pip.
+
+## Instalação
+
+```bash
+# Clone o repositório
+git clone <repo-url> && cd AgentQA
+
+# Instale as dependências
+uv sync
+
+# (Opcional) Copie e edite as variáveis de ambiente
+cp .env.example .env
+```
 
 ## Como Usar
 
-1. Clone ou baixe o projeto.
-2. Ative o ambiente virtual (se usar venv):
-   ```
-   .venv\Scripts\activate  # Windows
-   ```
-3. Execute o script principal:
-   ```
-   python qa.py
-   ```
-   Ou com `uv`:
-   ```
-   uv run qa.py
-   ```
+### CLI Interativa (modo padrão)
 
-O agente irá responder à pergunta de exemplo: "Pergunta hard: João mudou pra onde e com quantos anos?"
+```bash
+uv run main.py
+```
+
+### Populando a base com dados de exemplo
+
+```bash
+uv run main.py --seed
+```
+
+### Pergunta única (modo não-interativo)
+
+```bash
+uv run main.py --ask "Qual é a capital da França?"
+```
+
+### Comandos dentro da CLI
+
+| Comando        | Descrição                                      |
+|----------------|-------------------------------------------------|
+| `/add <texto>` | Adiciona documento inline à base de conhecimento |
+| `/add`         | Modo multilinha — cole texto e finalize com linha vazia |
+| `/docs`        | Ajuda sobre inserção de documentos              |
+| `/help`        | Mostra ajuda geral                              |
+| `/quit`        | Sair                                            |
 
 ## Estrutura do Projeto
 
-- `qa.py`: Script principal com a configuração do agente.
-- `tmp/lancedb/`: Diretório onde o LanceDB armazena os dados vetoriais.
-- `agent.db`: Banco de dados SQLite para histórico de conversas.
+```
+AgentQA/
+├── main.py                  # Entrypoint — CLI args e orquestração
+├── agent_qa/
+│   ├── __init__.py
+│   ├── config.py            # Configurações centralizadas (env vars)
+│   ├── agent.py             # Fábrica do agente (Agent + tools)
+│   ├── knowledge.py         # Gerenciamento da base RAG
+│   └── cli.py               # Loop interativo (perguntas + /add docs)
+├── .env.example             # Variáveis de ambiente de exemplo
+├── pyproject.toml
+├── tmp/                     # Dados de runtime (LanceDB, SQLite)
+└── README.md
+```
 
 ## Detalhes da Implementação
 

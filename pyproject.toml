@@ -1,7 +1,7 @@
 [project]
 name = "agentqa"
-version = "0.1.0"
-description = "AgentQA: building and evaluating agent-based question answering systems.1"
+version = "0.2.0"
+description = "AgentQA: Sistema de Perguntas e Respostas com IA usando RAG local."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -11,3 +11,6 @@ dependencies = [
     "openai>=2.21.0",
     "sqlalchemy>=2.0.46",
 ]
+
+[project.scripts]
+agentqa = "main:main"
