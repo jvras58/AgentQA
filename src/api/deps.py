@@ -2,6 +2,7 @@
 
 from agno.agent import Agent
 from agno.knowledge.knowledge import Knowledge
+from fastapi import HTTPException
 
 
 class AppState:
@@ -16,11 +17,13 @@ app_state = AppState()
 
 def get_knowledge_base() -> Knowledge:
     """Retorna a instância da base de conhecimento."""
-    assert app_state.kb is not None, "Knowledge base não inicializada."
+    if app_state.kb is None:
+        raise HTTPException(status_code=503, detail="Knowledge base não inicializada.")
     return app_state.kb
 
 
 def get_agent() -> Agent:
     """Retorna a instância do agente."""
-    assert app_state.agent is not None, "Agent não inicializado."
+    if app_state.agent is None:
+        raise HTTPException(status_code=503, detail="Agent não inicializado.")
     return app_state.agent

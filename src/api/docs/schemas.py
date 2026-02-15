@@ -1,4 +1,4 @@
-"""Schemas de request/response para o endpoint /query (base de conhecimento)."""
+"""Schemas de request/response para o endpoint /docs (base de conhecimento)."""
 
 from pydantic import BaseModel, Field
 

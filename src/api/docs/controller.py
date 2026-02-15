@@ -1,4 +1,4 @@
-"""Controller para o endpoint /query – lógica de negócio da base de conhecimento."""
+"""Controller para o endpoint /docs – lógica de negócio da base de conhecimento."""
 
 from agno.knowledge.knowledge import Knowledge
 from fastapi import HTTPException
