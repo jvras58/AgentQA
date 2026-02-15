@@ -4,6 +4,7 @@ memória e recursos adicionais. Utiliza Pydantic para gerenciamento de configura
 
 from pathlib import Path
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
@@ -13,7 +14,7 @@ class Settings(BaseSettings):
     # LLM & Embeddings (Ollama)
     llm_model: str = "llama3.1"
     embedder_model: str = "nomic-embed-text"
-    embedder_dims: int = 768
+    embedder_dimensions: int = Field(default=768, alias="EMBEDDER_DIMENSIONS")
 
     # Ollama hosts/ports
     ollama_host: str = "localhost"
@@ -28,8 +29,10 @@ class Settings(BaseSettings):
     vector_db_table: str = "docs"
 
     # Memory (SQLite)
-    memory_db_path: str = str(BASE_DIR / "tmp" / "agent.db")
-    history_runs: int = 3
+    memory_db_file: str = Field(
+        default=str(BASE_DIR / "tmp" / "agent.db"), alias="MEMORY_DB_FILE"
+    )
+    memory_history_runs: int = Field(default=3, alias="MEMORY_HISTORY_RUNS")
 
     # Features
     enable_web_search: bool = True
@@ -37,7 +40,10 @@ class Settings(BaseSettings):
     markdown: bool = True
 
     model_config = SettingsConfigDict(
-        env_file=".env", env_file_encoding="utf-8", extra="ignore"
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+        populate_by_name=True,
     )
 
 

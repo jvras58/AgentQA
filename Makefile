@@ -10,4 +10,8 @@ package:
 
 # Executar a Api
 run:
-	uv run python -m src.main
+	uv run uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
+
+# Seed exemplo
+seed:
+	set PYTHONPATH=. && uv run python src/scripts/seed_knowledge.py
