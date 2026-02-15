@@ -19,7 +19,7 @@ class AgentService:
         tools = [DuckDuckGoTools()] if settings.enable_web_search else []
 
         return Agent(
-            model=Ollama(id=settings.llm_model, host=settings.ollama_host, port=settings.ollama_port),
+            model=Ollama(id=settings.llm_model, host=settings.ollama_host),
             tools=tools,
             knowledge=self.kb,
             search_knowledge=True,

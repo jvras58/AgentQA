@@ -14,3 +14,17 @@ services:
     ports:
       - "11435:11434"
     container_name: embed-container
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    depends_on:
+      - llama-service
+      - embed-service
+    environment:
+      - OLLAMA_HOST=llama-service
+      - EMBEDDER_HOST=embed-service
+    stdin_open: true
+    tty: true
+    container_name: agentqa-app
