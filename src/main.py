@@ -1,34 +1,51 @@
-"""Ponto de entrada principal para a aplicação AgentQA. Este módulo é responsável por
-inicializar a base de conhecimento, configurar o agente
-e iniciar a interface de usuário interativa
-ou processar perguntas diretamente da linha de comando.
-"""
-import argparse
+"""Ponto de entrada da aplicação FastAPI AgentQA."""
 
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from src.api.deps import app_state
+from src.api.router import api_router
 from src.infra.knowledge import get_knowledge_base
-from src.infra.seed_knowledge import seed_knowledge
 from src.services.agent_service import AgentService
-from src.ui.cli import run_interactive
 
 
-def main():
-    """Ponto de entrada principal para a aplicação AgentQA."""
-    parser = argparse.ArgumentParser(description="AgentQA CLI")
-    parser.add_argument("--seed", action="store_true")
-    parser.add_argument("--ask", type=str)
-    args = parser.parse_args()
-
-    kb = get_knowledge_base()
-    if args.seed:
-        seed_knowledge(kb)
-
-    agent = AgentService(kb).build()
-
-    if args.ask:
-        agent.print_response(args.ask)
-    else:
-        run_interactive(agent, kb)
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Inicializa a base de conhecimento e o agente no startup."""
+    app_state.kb = get_knowledge_base()
+    app_state.agent = AgentService(app_state.kb).build()
+    yield
 
 
-if __name__ == "__main__":
-    main()
+app = FastAPI(
+    title="AgentQA API",
+    description="API para o sistema de perguntas e respostas com IA",
+    lifespan=lifespan,
+)
+
+# ----------------------------------
+#  APP CORSMiddleware
+# ----------------------------------
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+app.include_router(api_router)
+
+# ----------------------------------
+#  Root endpoint health check
+# ----------------------------------
+
+@app.get("/")
+def read_root():
+    """Root endpoint to verify that the API is running."""
+    return {"message": "Welcome to API!"}
