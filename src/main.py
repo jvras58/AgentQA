@@ -10,7 +10,7 @@ from src.api.router import api_router
 from src.core.config import settings
 from src.infra.knowledge import get_knowledge_base
 from src.infra.logging import get_logger
-from src.services.agent_service import AgentService
+from src.services.ask_agent_service import AskAgentService
 
 
 @asynccontextmanager
@@ -20,7 +20,7 @@ async def lifespan(app: FastAPI):
     logger.info("Inicializando knowledge base...")
     app_state.kb = get_knowledge_base()
     logger.info("Construindo agente (debug_mode=%s)...", settings.debug_mode)
-    app_state.agent = AgentService(app_state.kb).build()
+    app_state.agent = AskAgentService(app_state.kb).build()
     logger.info("AgentQA pronto!")
     yield
 

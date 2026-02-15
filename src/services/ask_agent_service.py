@@ -9,7 +9,7 @@ from agno.tools.duckduckgo import DuckDuckGoTools
 from src.core.config import settings
 
 
-class AgentService:
+class AskAgentService:
     def __init__(self, knowledge_base):
         """Inicializa o serviço do agente com a base de conhecimento fornecida."""
         self.kb = knowledge_base
