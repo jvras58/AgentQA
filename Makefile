@@ -14,4 +14,4 @@ run:
 
 # Seed exemplo
 seed:
-	set PYTHONPATH=. && uv run python src/scripts/seed_knowledge.py
+	uv run python -m src.scripts.seed_knowledge
