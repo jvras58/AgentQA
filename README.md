@@ -42,7 +42,7 @@ EMBEDDER_MODEL=nomic-embed-text
 OLLAMA_HOST=localhost
 OLLAMA_PORT=11434
 EMBEDDER_HOST=localhost
-EMBEDDER_PORT=11435
+EMBEDDER_PORT=11434  # Mesmo host/porta para ambos, pois Ollama local serve múltiplos modelos
 ENABLE_WEB_SEARCH=true
 ```
 
@@ -64,7 +64,31 @@ Para uma pergunta direta via terminal:
 uv run python -m src.main --ask "Qual a capital da França?"
 ```
 
-### Opção 2: Execução com Docker (Para Produção ou Isolamento)
+### Opção 2: Execução Local com Ollama em Docker (Para quem não tem Ollama instalado)
+Use os contêineres Docker para os modelos Ollama, mas execute a aplicação localmente.
+
+1. **Inicie os serviços Ollama em background**:
+   ```bash
+   docker-compose up -d llama-service embed-service
+   ```
+   Isso expõe o LLM na porta 11434 e o embedder na porta 11435.
+
+2. **Configure o `.env` para Docker**:
+   ```env
+   OLLAMA_HOST=localhost
+   OLLAMA_PORT=11434
+   EMBEDDER_HOST=localhost
+   EMBEDDER_PORT=11435
+   ```
+
+3. **Execute a aplicação**:
+   ```bash
+   uv run python -m src.main --seed
+   ```
+
+**Para parar os contêineres**: `docker-compose down`.
+
+### Opção 3: Execução com Docker (Para Produção ou Isolamento)
 O projeto inclui configurações Docker para rodar os modelos Ollama em contêineres isolados.
 
 #### Pré-requisitos para Docker
