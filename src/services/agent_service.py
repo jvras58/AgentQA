@@ -26,5 +26,5 @@ class AgentService:
             db=SqliteDb(db_file=settings.memory_db_path),
             add_history_to_context=True,
             num_history_runs=settings.history_runs,
-            markdown=True,
+            markdown=settings.markdown,
         )

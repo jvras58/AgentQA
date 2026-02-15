@@ -19,7 +19,9 @@ class Settings(BaseSettings):
     ollama_host: str = "localhost"
     ollama_port: int = 11434
     embedder_host: str = "localhost"
-    embedder_port: int = 11435  # Porta diferente para o embedder
+    embedder_port: int = (
+        11435  # Porta diferente para o embedder se rodar em um container separado
+    )
 
     # Vector DB (LanceDB)
     vector_db_uri: str = str(BASE_DIR / "tmp" / "lancedb")
@@ -32,6 +34,7 @@ class Settings(BaseSettings):
     # Features
     enable_web_search: bool = True
     debug_mode: bool = False
+    markdown: bool = True
 
     model_config = SettingsConfigDict(
         env_file=".env", env_file_encoding="utf-8", extra="ignore"
