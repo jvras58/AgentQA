@@ -76,7 +76,7 @@ Use os contêineres Docker para os modelos Ollama, mas execute a aplicação loc
 2. **Configure o `.env` para Docker**:
    ```env
    OLLAMA_HOST=localhost
-   OLLAMA_PORT=11434
+   OLLAMA_PORT=11434 # Destinguir pois estamos usando serviços de container diferentes
    EMBEDDER_HOST=localhost
    EMBEDDER_PORT=11435
    ```
