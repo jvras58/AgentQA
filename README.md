@@ -85,7 +85,7 @@ Use os contêineres Docker para os modelos Ollama, mas execute a aplicação loc
    make seed && make run
    ```
 
-**Para parar os contêineres**: `docker-compose down`.
+**Para parar os contêineres**: `docker compose down`.
 
 ### Opção 3: Execução com Docker (Para Produção ou Isolamento)
 O projeto inclui configurações Docker para rodar os modelos Ollama em contêineres isolados.
@@ -117,7 +117,7 @@ O projeto inclui configurações Docker para rodar os modelos Ollama em contêin
    make seed && make run
    ```
 
-**Nota**: Os modelos são baixados durante a construção das imagens, o que pode levar tempo na primeira execução. Para parar os contêineres: `docker-compose down`.
+**Nota**: Os modelos são baixados durante a construção das imagens, o que pode levar tempo na primeira execução. Para parar os contêineres: `docker compose down`.
 
 ## 📡 API Endpoints
 
