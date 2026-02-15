@@ -9,7 +9,8 @@ class AppState:
     """Armazena estado global inicializado no lifespan."""
 
     kb: Knowledge | None = None
-    agent: Agent | None = None
+    agent_ask: Agent | None = None
+    question_agent: Agent | None = None
 
 
 app_state = AppState()
@@ -22,8 +23,14 @@ def get_knowledge_base() -> Knowledge:
     return app_state.kb
 
 
-def get_agent() -> Agent:
-    """Retorna a instância do agente."""
-    if app_state.agent is None:
+def get_ask_agent() -> Agent:
+    """Retorna a instância do agente de perguntas."""
+    if app_state.agent_ask is None:
         raise HTTPException(status_code=503, detail="Agent não inicializado.")
-    return app_state.agent
+    return app_state.agent_ask
+
+
+def get_question_agent() -> Agent:
+    """Retorna a instância do agente gerador de questões."""
+    assert app_state.question_agent is not None, "Question Agent não inicializado."
+    return app_state.question_agent
