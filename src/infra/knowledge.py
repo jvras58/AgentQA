@@ -16,7 +16,7 @@ def get_knowledge_base() -> Knowledge:
             embedder=OllamaEmbedder(
                 id=settings.embedder_model,
                 dimensions=settings.embedder_dimensions,
-                host=settings.embedder_host,
+                host=f"{settings.embedder_host}:{settings.embedder_port}",
             ),
         )
     )
