@@ -1,13 +1,13 @@
 # 🤖 AgentQA
 
-Sistema de Perguntas e Respostas (QA) com IA utilizando **RAG (Retrieval-Augmented Generation)** local.
+Sistema de Perguntas e Respostas (QA) com IA utilizando **RAG (Retrieval-Augmented Generation)** local, implementado como uma API FastAPI.
 
 ## 📂 Estrutura de Pastas
 
 - `src/core/`: Configurações globais e validação de ambiente com **Pydantic Settings**.
 - `src/infra/`: Gerenciamento de persistência (LanceDB) e conhecimento.
 - `src/services/`: Lógica de construção e orquestração do Agente.
-- `src/ui/`: Interface de usuário (CLI interativa).
+- `src/api/`: Endpoints da API FastAPI.
 
 ## 🛠️ Instalação e Configuração
 
@@ -49,19 +49,18 @@ ENABLE_WEB_SEARCH=true
 ## 🚀 Como Executar
 
 ### Opção 1: Execução Local (Recomendado para Desenvolvimento)
-Para iniciar a CLI interativa:
+Para iniciar o servidor FastAPI:
 ```bash
-uv run python -m src.main
+make run
+```
+Ou diretamente:
+```bash
+uv run uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-Para carregar os dados de exemplo (seed) e iniciar:
+Para carregar os dados de exemplo (seed) antes de iniciar:
 ```bash
-uv run python -m src.main --seed
-```
-
-Para uma pergunta direta via terminal:
-```bash
-uv run python -m src.main --ask "Qual a capital da França?"
+make seed
 ```
 
 ### Opção 2: Execução Local com Ollama em Docker (Para quem não tem Ollama instalado)
@@ -69,21 +68,21 @@ Use os contêineres Docker para os modelos Ollama, mas execute a aplicação loc
 
 1. **Inicie os serviços Ollama em background**:
    ```bash
-   docker-compose up -d llama-service embed-service
+   docker compose up -d llama-service embed-service
    ```
    Isso expõe o LLM na porta 11434 e o embedder na porta 11435.
 
-2. **Configure o `.env` para Docker**:
+2. **Configure o .env para Docker**:
    ```env
    OLLAMA_HOST=localhost
-   OLLAMA_PORT=11434 # Destinguir pois estamos usando serviços de container diferentes
+   OLLAMA_PORT=11434
    EMBEDDER_HOST=localhost
    EMBEDDER_PORT=11435
    ```
 
 3. **Execute a aplicação**:
    ```bash
-   uv run python -m src.main --seed
+   make seed && make run
    ```
 
 **Para parar os contêineres**: `docker-compose down`.
@@ -103,8 +102,8 @@ O projeto inclui configurações Docker para rodar os modelos Ollama em contêin
    - `llama-service`: Modelo LLM (`llama3.1`) na porta 11434.
    - `embed-service`: Modelo de embeddings (`nomic-embed-text`) na porta 11435.
 
-2. **Configure o `.env` para Docker**:
-   Edite o `.env` para apontar para os nomes dos serviços na rede Docker:
+2. **Configure o .env para Docker**:
+   Edite o .env para apontar para os nomes dos serviços na rede Docker:
    ```env
    OLLAMA_HOST=llama-service
    OLLAMA_PORT=11434
@@ -115,16 +114,20 @@ O projeto inclui configurações Docker para rodar os modelos Ollama em contêin
 3. **Execute a aplicação**:
    Com os contêineres rodando em background, execute a aplicação localmente:
    ```bash
-   uv run python -m src.main --seed
+   make seed && make run
    ```
 
 **Nota**: Os modelos são baixados durante a construção das imagens, o que pode levar tempo na primeira execução. Para parar os contêineres: `docker-compose down`.
 
-## 📝 Comandos na CLI
+## 📡 API Endpoints
 
-- `/add`: Adiciona novos textos à base de conhecimento em tempo real.
-- `/help`: Mostra a lista de comandos.
-- `/quit`: Encerra o programa.
+A API está disponível em `http://localhost:8000` (ou conforme configurado).
+
+- **GET /**: Health check da API.
+- **POST /ask**: Faz uma pergunta ao agente. Corpo: `{"question": "Sua pergunta aqui"}`.
+- **POST /docs/add**: Adiciona um documento à base de conhecimento. Corpo: `{"text": "Conteúdo do documento"}`.
+
+Use ferramentas como Postman, curl ou a documentação automática do FastAPI em docs para testar.
 
 ## Detalhes da Implementação
 
@@ -148,7 +151,7 @@ Os dados inseridos na base de conhecimento são exemplos variados (fáceis, méd
 
 ### Uso de Modelos Pequenos (SMLs) com Tools
 
-Algums modelos como o `phi3` não suporta o uso de ferramentas (tools) no Agno, conforme a documentação. Para usar modelos menores localmente, considere alternativas como:
+Alguns modelos como o `phi3` não suportam o uso de ferramentas (tools) no Agno, conforme a documentação. Para usar modelos menores localmente, considere alternativas como:
 
 - **phi4** ou **qwen2.5-7b**: Modelos pequenos mas poderosos.
 - **Provedores Locais**: Ollama, LM Studio, LlamaCpp ou VLLM.
