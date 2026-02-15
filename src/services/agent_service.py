@@ -23,8 +23,9 @@ class AgentService:
             tools=tools,
             knowledge=self.kb,
             search_knowledge=True,
-            db=SqliteDb(db_file=settings.memory_db_path),
+            db=SqliteDb(db_file=settings.memory_db_file),
             add_history_to_context=True,
-            num_history_runs=settings.history_runs,
+            num_history_runs=settings.memory_history_runs,
             markdown=settings.markdown,
+            debug_mode=settings.debug_mode,
         )
