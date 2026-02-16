@@ -11,10 +11,10 @@ router = APIRouter(prefix="/docs", tags=["Knowledge Base"])
 
 
 @router.post("/add", response_model=AddDocumentResponse)
-def add_knowledge(
+async def add_knowledge(
     req: AddDocumentRequest,
     kb: Knowledge = Depends(get_knowledge_base),
 ):
     """Adiciona um novo documento à base de conhecimento."""
-    message = handle_add_document(kb, req.text)
+    message = await handle_add_document(kb, req.text)
     return AddDocumentResponse(status="success", message=message)

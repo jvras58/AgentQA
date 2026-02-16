@@ -4,13 +4,11 @@ from agno.knowledge.knowledge import Knowledge
 from fastapi import HTTPException
 
 
-def handle_add_document(kb: Knowledge, text: str) -> str:
-    """Adiciona um documento à base de conhecimento e retorna mensagem de sucesso."""
+async def handle_add_document(kb: Knowledge, text: str) -> str:
     if not text.strip():
         raise HTTPException(
-            status_code=400,
-            detail="O texto do documento não pode estar vazio.",
+            status_code=400, detail="O texto do documento não pode estar vazio."
         )
 
-    kb.insert(text_content=text, skip_if_exists=True)
+    await kb.ainsert(text_content=text, skip_if_exists=True)
     return f"Documento adicionado ({len(text)} caracteres)."
