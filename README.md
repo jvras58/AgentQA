@@ -6,7 +6,7 @@ Sistema de Perguntas e Respostas (QA) com IA utilizando **RAG (Retrieval-Augment
 
 - `src/core/`: Configurações globais e validação de ambiente com **Pydantic Settings**.
 - `src/infra/`: Gerenciamento de persistência (LanceDB) e conhecimento.
-- `src/services/`: Lógica de construção e orquestração do Agente.
+- `src/services/`: Lógica de construção e orquestração dos Agentes.
 - `src/api/`: Endpoints da API FastAPI.
 
 ## 🛠️ Instalação e Configuração
