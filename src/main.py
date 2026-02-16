@@ -21,7 +21,7 @@ async def lifespan(app: FastAPI):
     logger.info("Inicializando knowledge base...")
     app_state.kb = get_knowledge_base()
     logger.info("Construindo agente ask (debug_mode=%s)...", settings.debug_mode)
-    app_state.agent_ask = AskAgentService(app_state.kb).build()
+    app_state.ask_agent = AskAgentService(app_state.kb).build()
     logger.info("Agente ask pronto!")
     logger.info("...")
     logger.info(

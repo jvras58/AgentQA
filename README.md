@@ -125,7 +125,7 @@ A API está disponível em `http://localhost:8000` (ou conforme configurado).
 
 - **GET /**: Health check da API.
 - **POST /ask**: Faz uma pergunta ao agente. Corpo: `{"question": "Sua pergunta aqui"}`.
-- **POST /questions** Cria Questões baseado na base de conhecimento fornecido para ele. Corpo: `{"topic": "Topico da Pergunta", "num_questions": "Quantidade de Questões", "difficulty": "Nivel de dificuldade"}`
+- **POST /questions/generate**: Cria questões baseado na base de conhecimento fornecida. Corpo: `{"topic": "Topico da Pergunta", "num_questions": 5, "difficulty": "Nivel de dificuldade"}`
 - **POST /docs/add**: Adiciona um documento à base de conhecimento. Corpo: `{"text": "Conteúdo do documento"}`.
 
 Use ferramentas como Postman, curl ou a documentação automática do FastAPI em docs para testar.
