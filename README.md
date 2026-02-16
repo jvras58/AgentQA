@@ -119,6 +119,20 @@ O projeto inclui configurações Docker para rodar os modelos Ollama em contêin
 
 **Nota**: Os modelos são baixados durante a construção das imagens, o que pode levar tempo na primeira execução. Para parar os contêineres: `docker compose down`.
 
+### Sessão de Testes
+Use os comandos abaixo para executar os testes do projeto:
+
+```bash
+# Rodar todos os testes
+uv run pytest -v
+
+# Rodar com cobertura
+uv run pytest --cov=src --cov-report=term-missing
+
+# Rodar só um módulo
+uv run pytest tests/api/test_ask.py -v
+```
+
 ## 📡 API Endpoints
 
 A API está disponível em `http://localhost:8000` (ou conforme configurado).
