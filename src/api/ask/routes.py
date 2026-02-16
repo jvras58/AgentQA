@@ -11,10 +11,10 @@ router = APIRouter(prefix="/ask", tags=["Ask"])
 
 
 @router.post("", response_model=AskResponse)
-def ask_question(
+async def ask_question(
     req: AskRequest,
     agent: Agent = Depends(get_ask_agent),
 ):
     """Recebe uma pergunta e retorna a resposta do agente."""
-    answer = handle_ask(agent, req.question)
+    answer = await handle_ask(agent, req.question)
     return AskResponse(answer=answer)
