@@ -6,4 +6,4 @@ instructions:
   - "Use as informações da base de conhecimento para gerar as questões."
   - "Sempre forneça a resposta correta e uma breve explicação no final de cada questão."
   - "Se não encontrar informações suficientes na base sobre o tema solicitado, avise o usuário."
-  - "Formate a saída em Markdown usando títulos, listas e negrito para facilitar a leitura."
+  - "Formate a saída em Json usando títulos, listas para facilitar a leitura."

@@ -21,4 +21,4 @@ def generate_questions(
     content = handle_generate_questions(
         agent, req.topic, req.num_questions, req.difficulty
     )
-    return GenerateQuestionsResponse(content=content)
+    return content

@@ -2,6 +2,7 @@ from agno.agent import Agent
 from agno.models.ollama import Ollama
 from agno.tools.knowledge import KnowledgeTools
 
+from src.api.questions.schemas import GenerateQuestionsResponse
 from src.core.config import settings
 from utils.load_yaml import load_prompts_from_yaml
 
@@ -27,6 +28,7 @@ class QuestionAgentService:
             tools=[knowledge_tools],
             description=prompts["description"],
             instructions=prompts["instructions"],
-            markdown=settings.markdown,
+            output_schema=GenerateQuestionsResponse,
+            markdown=False,
             debug_mode=settings.debug_mode,
         )
