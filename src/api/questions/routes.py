@@ -18,7 +18,7 @@ async def generate_questions(
     agent: Agent = Depends(get_question_agent),
 ):
     """Gera questões com base no tema, quantidade e dificuldade fornecidos."""
-    content = handle_generate_questions(
+    content = await handle_generate_questions(
         agent, req.topic, req.num_questions, req.difficulty
     )
     return content
