@@ -3,6 +3,7 @@ from agno.models.ollama import Ollama
 from agno.tools.knowledge import KnowledgeTools
 
 from src.core.config import settings
+from utils.load_yaml import load_question_agent_prompts
 
 
 class QuestionAgentService:
@@ -19,16 +20,13 @@ class QuestionAgentService:
             add_few_shot=True,
         )
 
+        prompts = load_question_agent_prompts()
+
         return Agent(
             model=Ollama(id=settings.llm_model, host=settings.ollama_host),
             tools=[knowledge_tools],
-            description="Você é um professor especialista em criar questões baseadas em documentos.",
-            instructions=[
-                "Use as informações da base de conhecimento para gerar as questões.",
-                "Sempre forneça a resposta correta e uma breve explicação.",
-                "Se não encontrar informações suficientes, avise o usuário.",
-                "Formate a saída em Markdown.",
-            ],
+            description=prompts["description"],
+            instructions=prompts["instructions"],
             markdown=settings.markdown,
             debug_mode=settings.debug_mode,
         )
