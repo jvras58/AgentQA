@@ -15,3 +15,6 @@ run:
 # Seed exemplo
 seed:
 	uv run python -m src.scripts.seed_knowledge
+
+tests:
+	uv run pytest -v
