@@ -26,11 +26,12 @@ def get_knowledge_base() -> Knowledge:
 def get_ask_agent() -> Agent:
     """Retorna a instância do agente de perguntas."""
     if app_state.ask_agent is None:
-        raise HTTPException(status_code=503, detail="Agent não inicializado.")
+        raise HTTPException(status_code=503, detail="Ask Agent não inicializado.")
     return app_state.ask_agent
 
 
 def get_question_agent() -> Agent:
     """Retorna a instância do agente gerador de questões."""
-    assert app_state.question_agent is not None, "Question Agent não inicializado."
+    if app_state.question_agent is None:
+        raise HTTPException(status_code=503, detail="Question Agent não inicializado.")
     return app_state.question_agent
