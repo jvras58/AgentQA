@@ -1,5 +1,0 @@
-FROM ollama/ollama:0.15.0
-
-RUN ollama serve & sleep 5 && ollama pull nomic-embed-text && pkill ollama
-
-CMD ["serve"]

@@ -1,16 +1,49 @@
 services:
-  llama-service:
+  api:
     build:
       context: .
-      dockerfile: Dockerfile.llama
+      dockerfile: Dockerfile
+    command: uv run uvicorn src.main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      llama-service:
+        condition: service_healthy
+      embed-service:
+        condition: service_healthy
+
+  llama-service:
+    image: ollama/ollama:0.15.0
     ports:
       - "11434:11434"
     container_name: llama-container
+    command: ["sh", "-c", "ollama pull llama3.1 && ollama serve"]
+    volumes:
+      - llama_data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
 
   embed-service:
-    build:
-      context: .
-      dockerfile: Dockerfile.embed
+    image: ollama/ollama:0.15.0
     ports:
       - "11435:11434"
     container_name: embed-container
+    command: ["sh", "-c", "ollama pull nomic-embed-text && ollama serve"]
+    volumes:
+      - embed_data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+volumes:
+  llama_data:
+  embed_data:
