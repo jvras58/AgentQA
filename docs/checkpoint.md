@@ -70,8 +70,35 @@ Durante o desenvolvimento, fizemos otimizações adicionais para eficiência e p
 
 - **Sobre Fine-Tuning**: É possível fazer fine-tuning em modelos que já passaram por treinamento prévio, desde que sejam open-source e acessíveis (como o Llama3.1 usado aqui via Ollama). Isso envolve treinar o modelo em um dataset específico (ex.: pares de perguntas/respostas do seu domínio) usando ferramentas como Hugging Face Transformers ou Axolotl. No entanto, requer hardware potente (GPU), dados de qualidade e tempo. Para protótipos, ajustes de prompts ou few-shot learning podem ser suficientes antes de investir em fine-tuning.
 
+#### 6. **Decisão sobre Infraestrutura de Containers: Serviços Ollama Separados vs. Consolidado**
+Durante a configuração do `compose.yml` para containerização, avaliamos duas abordagens para os serviços do Ollama (responsáveis pelos modelos `llama3.1` para geração de texto e `nomic-embed-text` para embeddings):
+
+- **Abordagem Escolhida: Serviços Separados** (implementada no `compose.yml` atual):
+  - Dois containers independentes (`llama-service` e `embed-service`), cada um rodando sua própria instância do Ollama, fazendo pull do modelo específico e expondo portas distintas (11434 e 11435).
+  - **Prós**:
+    - **Isolamento**: Cada modelo roda em seu próprio processo, evitando conflitos de memória/CPU e facilitando debugging (ex.: se um crashar, o outro continua).
+    - **Flexibilidade e Escalabilidade**: Fácil modificar ou escalar um serviço sem afetar o outro. Healthchecks e `depends_on` funcionam independentemente.
+    - **Simplicidade na Configuração da App**: A API conecta a portas diferentes sem necessidade de refatorar código (ex.: `localhost:11434` para llama, `localhost:11435` para embed).
+    - **Manutenibilidade**: Volumes separados para persistir modelos, e setup direto com Docker Compose.
+  - **Contras**:
+    - Mais containers (3 no total: API + 2 Ollama), consumindo um pouco mais de recursos (insignificante em setups modernos).
+    - Overhead mínimo de gerenciamento (ex.: dois healthchecks em vez de um).
+
+- **Abordagem Alternativa: Serviço Consolidado**:
+  - Um container único do Ollama que faz pull de ambos os modelos (`llama3.1` e `nomic-embed-text`) e os serve simultaneamente em uma porta só (ex.: 11434).
+  - **Prós**:
+    - Menos containers (2 no total), setup mais simples e menos overhead de Docker.
+    - Ollama suporta múltiplos modelos carregados, então funcionaria sem problemas.
+  - **Contras**:
+    - **Perda de Isolamento**: Modelos competem por recursos no mesmo container, potencialmente afetando performance (especialmente com modelos grandes como llama3.1).
+    - **Complexidade na App**: Requer refatorar a configuração para usar o mesmo endpoint e especificar o modelo nas requisições (ex.: via parâmetro `model` na API do Ollama).
+    - **Escalabilidade Limitada**: Dificulta escalar apenas um modelo no futuro.
+    - **Healthcheck Mais Complexo**: Verificar se ambos os modelos estão prontos (ex.: testar dois endpoints ou listar modelos).
+
+**Por Que Optamos por Separado?** Priorizamos isolamento, flexibilidade e simplicidade de manutenção, adequados para um projeto modular como o AgentQA. O isolamento evita riscos de interferência entre modelos, e a separação de portas mantém o código da app limpo. Se o projeto crescer muito, podemos reavaliar a consolidação, mas por ora, separado oferece melhor controle e eficiência local.
 
 
-#### 6. **Próximos Passos ou Ajustes**
+
+#### 7. **Próximos Passos ou Ajustes**
 - **Ajustes no Agente de Geração**: Como mencionado, o modelo treinado pode precisar de fine-tuning (ou algo do tipo) para questões mais precisas.
 - **Expansão**: Adicionar mais docs via `seed_knowledge.py` ou integrar com outras fontes.
