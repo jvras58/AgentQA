@@ -6,7 +6,7 @@ from fastapi import HTTPException
 from src.api.questions.schemas import GenerateQuestionsResponse
 
 
-def handle_generate_questions(
+async def handle_generate_questions(
     agent: Agent, topic: str, num_questions: int, difficulty: str
 ) -> GenerateQuestionsResponse:
     """Monta o prompt e executa a geração de questões no agente."""
@@ -18,5 +18,5 @@ def handle_generate_questions(
         f"dificuldade '{difficulty}' sobre o seguinte tema: {topic}."
     )
 
-    response = agent.run(prompt)
+    response = await agent.arun(prompt)
     return response.content

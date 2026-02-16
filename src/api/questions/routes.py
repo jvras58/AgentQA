@@ -13,7 +13,7 @@ from src.api.questions.schemas import (
 router = APIRouter(prefix="/questions", tags=["Questions"])
 
 @router.post("/generate", response_model=GenerateQuestionsResponse)
-def generate_questions(
+async def generate_questions(
     req: GenerateQuestionsRequest,
     agent: Agent = Depends(get_question_agent),
 ):

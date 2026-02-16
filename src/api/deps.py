@@ -30,7 +30,7 @@ def get_ask_agent() -> Agent:
     return app_state.ask_agent
 
 
-def get_question_agent() -> Agent:
+async def get_question_agent() -> Agent:
     """Retorna a instância do agente gerador de questões."""
     if app_state.question_agent is None:
         raise HTTPException(status_code=503, detail="Question Agent não inicializado.")
