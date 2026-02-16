@@ -196,6 +196,13 @@ uv add openai sqlalchemy
 - [Histórico do Agente](https://docs.agno.com/history/agent/overview)
 - [Modelos Locais com Ollama](https://docs.agno.com/models/ollama)
 - [Modelos com LM Studio](https://docs.agno.com/models/lmstudio)
+- [KnowledgeTools](https://docs.agno.com/tools/toolkits/others/knowledge)
+- [Reasoning](https://docs.agno.com/reasoning/reasoning-tools)
+- [Engenharia de Contexto](https://docs.agno.com/context/agent/overview)
+- [Traga seu próprio aplicativo FastAPI](https://docs.agno.com/agent-os/custom-fastapi/overview)
+- [O que é o AgentOS](https://docs.agno.com/agent-os/introduction)
+- [Execute seu AgentOS](https://docs.agno.com/agent-os/run-your-os)
+
 
 Para mais informações, visite a [documentação oficial do Agno](https://docs.agno.com/).
 
