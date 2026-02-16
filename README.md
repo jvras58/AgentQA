@@ -6,7 +6,7 @@ Sistema de Perguntas e Respostas (QA) com IA utilizando **RAG (Retrieval-Augment
 
 - `src/core/`: Configurações globais e validação de ambiente com **Pydantic Settings**.
 - `src/infra/`: Gerenciamento de persistência (LanceDB) e conhecimento.
-- `src/services/`: Lógica de construção e orquestração do Agente.
+- `src/services/`: Lógica de construção e orquestração dos Agentes.
 - `src/api/`: Endpoints da API FastAPI.
 
 ## 🛠️ Instalação e Configuração
@@ -125,6 +125,7 @@ A API está disponível em `http://localhost:8000` (ou conforme configurado).
 
 - **GET /**: Health check da API.
 - **POST /ask**: Faz uma pergunta ao agente. Corpo: `{"question": "Sua pergunta aqui"}`.
+- **POST /questions/generate**: Cria questões baseado na base de conhecimento fornecida. Corpo: `{"topic": "Topico da Pergunta", "num_questions": 5, "difficulty": "Nivel de dificuldade"}`
 - **POST /docs/add**: Adiciona um documento à base de conhecimento. Corpo: `{"text": "Conteúdo do documento"}`.
 
 Use ferramentas como Postman, curl ou a documentação automática do FastAPI em docs para testar.
