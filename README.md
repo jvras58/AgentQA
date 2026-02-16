@@ -172,18 +172,6 @@ agent.print_response("Olá!")
 
 Certifique-se de que o modelo suporte tools se precisar dessa funcionalidade.
 
-### Instalação obrigatória de pacotes/libs
-
-Embora o projeto utilize modelos locais via Ollama (evitando dependências de APIs externas como OpenAI), o Agno requer algumas bibliotecas como dependências obrigatórias. Mesmo que não sejam usadas diretamente no código, elas são necessárias para o funcionamento do framework:
-
-- `"openai"`: Biblioteca para integração com OpenAI, mas não utilizada aqui, pois optamos por modelos locais.
-- `"sqlalchemy"`: ORM para bancos de dados, usado internamente pelo Agno para gerenciar o histórico e outras funcionalidades.
-
-Essas dependências são instaladas automaticamente ao executar `uv sync`. Se preferir instalar manualmente:
-
-```bash
-uv add openai sqlalchemy
-```
 
 ## Referências da Documentação do Agno
 
