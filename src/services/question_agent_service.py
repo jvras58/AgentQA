@@ -3,7 +3,7 @@ from agno.models.ollama import Ollama
 from agno.tools.knowledge import KnowledgeTools
 
 from src.core.config import settings
-from utils.load_yaml import load_question_agent_prompts
+from utils.load_yaml import load_prompts_from_yaml
 
 
 class QuestionAgentService:
@@ -20,7 +20,7 @@ class QuestionAgentService:
             add_few_shot=True,
         )
 
-        prompts = load_question_agent_prompts()
+        prompts = load_prompts_from_yaml("question_agent.yaml")
 
         return Agent(
             model=Ollama(id=settings.llm_model, host=settings.ollama_host),
