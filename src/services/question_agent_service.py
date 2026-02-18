@@ -5,11 +5,17 @@ from agno.tools.knowledge import KnowledgeTools
 from src.api.questions.schemas import GenerateQuestionsResponse
 from src.core.config import settings
 from utils.load_yaml import load_prompts_from_yaml
+from src.infra.knowledge import get_knowledge_base
 
 
 class QuestionAgentService:
-    def __init__(self, knowledge_base):
-        self.kb = knowledge_base
+    def __init__(self, knowledge_base=None, table_name: str | None = "questions"):
+        """Inicializa o QuestionAgentService.
+
+        - Usa `knowledge_base` quando fornecida (compatibilidade).
+        - Caso contrário cria uma KB específica para o agente com `table_name`.
+        """
+        self.kb = knowledge_base or get_knowledge_base(table_name=table_name)
 
     def build(self) -> Agent:
         knowledge_tools = KnowledgeTools(

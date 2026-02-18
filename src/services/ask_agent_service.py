@@ -8,12 +8,18 @@ from agno.tools.duckduckgo import DuckDuckGoTools
 from agno.tools.knowledge import KnowledgeTools
 
 from src.core.config import settings
+from src.infra.knowledge import get_knowledge_base
 
 
 class AskAgentService:
-    def __init__(self, knowledge_base):
-        """Inicializa o serviço do agente com a base de conhecimento fornecida."""
-        self.kb = knowledge_base
+    def __init__(self, knowledge_base=None, table_name: str | None = "ask"):
+        """Inicializa o serviço do agente.
+
+        - Se `knowledge_base` for fornecida, será utilizada (compatibilidade).
+        - Caso contrário, cria uma `Knowledge` específica para este agente
+          usando `get_knowledge_base(table_name=...)`.
+        """
+        self.kb = knowledge_base or get_knowledge_base(table_name=table_name)
 
     def build(self) -> Agent:
         """Constrói e retorna uma instância do agente configurada."""
