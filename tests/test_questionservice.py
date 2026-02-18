@@ -31,3 +31,22 @@ class TestQuestionAgentService:
 
         mock_load_yaml.assert_called_once_with("question_agent.yaml")
         mock_agent.assert_called_once()
+
+    def test_init_uses_table_name_when_no_kb_provided(self):
+        """Ao inicializar sem `knowledge_base`, deve chamar `get_knowledge_base(table_name=...)`."""
+
+        with patch(
+            "src.services.question_agent_service.get_knowledge_base"
+        ) as mock_get_kb:
+            mock_kb = MagicMock()
+            mock_get_kb.return_value = mock_kb
+
+            service = QuestionAgentService(None, table_name="faqs")
+
+            mock_get_kb.assert_called_once_with(table_name="faqs")
+            assert service.kb is mock_kb
+
+    def test_init_keeps_provided_kb(self):
+        kb = MagicMock()
+        service = QuestionAgentService(kb)
+        assert service.kb is kb

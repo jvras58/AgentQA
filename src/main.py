@@ -18,17 +18,27 @@ from src.services.question_agent_service import QuestionAgentService
 async def lifespan(app: FastAPI):
     """Inicializa a base de conhecimento e os agentes no startup."""
     logger = get_logger("lifespan")
-    logger.info("Inicializando knowledge base...")
+    logger.info("Inicializando knowledge base (padrão)...")
     app_state.kb = get_knowledge_base()
-    logger.info("Construindo agente ask (debug_mode=%s)...", settings.debug_mode)
-    app_state.ask_agent = AskAgentService(app_state.kb).build()
-    logger.info("Agente ask pronto!")
-    logger.info("...")
+    app_state.kbs["default"] = app_state.kb
+
     logger.info(
-        "Construindo agente gerador de questões (debug_mode=%s)...", settings.debug_mode
+        "Construindo agente ask (KB='ask', debug_mode=%s)...", settings.debug_mode
     )
-    app_state.question_agent = QuestionAgentService(app_state.kb).build()
+    ask_kb = get_knowledge_base(table_name="ask")
+    app_state.kbs["ask"] = ask_kb
+    app_state.ask_agent = AskAgentService(ask_kb).build()
+    logger.info("Agente ask pronto!")
+
+    logger.info(
+        "Construindo agente gerador de questões (KB='questions', debug_mode=%s)...",
+        settings.debug_mode,
+    )
+    questions_kb = get_knowledge_base(table_name="questions")
+    app_state.kbs["questions"] = questions_kb
+    app_state.question_agent = QuestionAgentService(questions_kb).build()
     logger.info("Agente gerador de questões pronto!")
+
     logger.info("AgentQA pronto!")
     yield
 

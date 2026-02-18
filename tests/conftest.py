@@ -57,8 +57,15 @@ def configured_app_state(mock_knowledge_base, mock_ask_agent, mock_question_agen
     original_kb = app_state.kb
     original_ask = app_state.ask_agent
     original_question = app_state.question_agent
+    original_kbs = dict(app_state.kbs)
 
     app_state.kb = mock_knowledge_base
+    # registra KBs nomeadas para permitir seleção por nome em testes
+    app_state.kbs = {
+        "default": mock_knowledge_base,
+        "ask": mock_knowledge_base,
+        "questions": mock_knowledge_base,
+    }
     app_state.ask_agent = mock_ask_agent
     app_state.question_agent = mock_question_agent
 
@@ -68,6 +75,8 @@ def configured_app_state(mock_knowledge_base, mock_ask_agent, mock_question_agen
     app_state.kb = original_kb
     app_state.ask_agent = original_ask
     app_state.question_agent = original_question
+    app_state.kbs.clear()
+    app_state.kbs.update(original_kbs)
 
 
 @pytest.fixture()

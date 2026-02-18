@@ -57,3 +57,19 @@ class TestAskAgentService:
             assert agent is not None
 
         mock_agent.assert_called_once()
+
+    def test_init_uses_table_name_when_no_kb_provided(self):
+        """Ao inicializar sem `knowledge_base`, deve chamar `get_knowledge_base(table_name=...)`."""
+
+        with patch("src.services.ask_agent_service.get_knowledge_base") as mock_get_kb:
+            mock_kb = MagicMock()
+            mock_get_kb.return_value = mock_kb
+            service = AskAgentService(None, table_name="recipes")
+
+            mock_get_kb.assert_called_once_with(table_name="recipes")
+            assert service.kb is mock_kb
+
+    def test_init_keeps_provided_kb(self):
+        kb = MagicMock()
+        service = AskAgentService(kb)
+        assert service.kb is kb
