@@ -27,6 +27,33 @@ class TestDocsEndpoint:
 
         assert response.status_code == 400
 
+    def test_add_document_to_specific_table_success(
+        self, client, mock_knowledge_base, monkeypatch
+    ):
+        """Deve permitir adicionar documento em uma tabela específica."""
+        # Forçar a função importada usada pela rota (`infra_get_knowledge_base`)
+        monkeypatch.setattr(
+            "src.api.docs.routes.infra_get_knowledge_base",
+            lambda table_name=None: mock_knowledge_base,
+        )
+
+        response = client.post(
+            "/docs/add", json={"text": "Documento na KB ask.", "table": "ask"}
+        )
+        assert response.status_code == 200
+        mock_knowledge_base.ainsert.assert_awaited_once()
+
+    def test_get_tables_returns_list(self, client, monkeypatch):
+        """GET /docs/tables deve retornar as tabelas disponíveis."""
+        monkeypatch.setattr(
+            "src.api.docs.routes.list_tables",
+            lambda: ["docs", "ask", "questions"],
+        )
+
+        response = client.get("/docs/tables")
+        assert response.status_code == 200
+        assert response.json() == {"tables": ["docs", "ask", "questions"]}
+
 
 class TestDocsController:
     """Testes unitários do controller handle_add_document."""
