@@ -18,17 +18,27 @@ from src.services.question_agent_service import QuestionAgentService
 async def lifespan(app: FastAPI):
     """Inicializa a base de conhecimento e os agentes no startup."""
     logger = get_logger("lifespan")
-    logger.info("Inicializando knowledge base...")
-    app_state.kb = get_knowledge_base()
-    logger.info("Construindo agente ask (debug_mode=%s)...", settings.debug_mode)
-    app_state.ask_agent = AskAgentService(app_state.kb).build()
-    logger.info("Agente ask pronto!")
-    logger.info("...")
     logger.info(
-        "Construindo agente gerador de questões (debug_mode=%s)...", settings.debug_mode
+        "Inicializando knowledge base (default '%s')...", settings.vector_db_table
     )
-    app_state.question_agent = QuestionAgentService(app_state.kb).build()
-    logger.info("Agente gerador de questões pronto!")
+    app_state.kb = get_knowledge_base()
+    logger.info("Knowledge base pronta! (table='%s')", settings.vector_db_table)
+
+    logger.info(
+        "Construindo agente ask (table='ask', debug_mode=%s)...", settings.debug_mode
+    )
+    ask_kb = get_knowledge_base(table_name="ask")
+    app_state.ask_agent = AskAgentService(knowledge_base=ask_kb).build()
+    logger.info("Agente ask pronto! (table='ask')")
+
+    logger.info(
+        "Construindo agente gerador de questões (table='questions', debug_mode=%s)...",
+        settings.debug_mode,
+    )
+    questions_kb = get_knowledge_base(table_name="questions")
+    app_state.question_agent = QuestionAgentService(knowledge_base=questions_kb).build()
+    logger.info("Agente gerador de questões pronto! (table='questions')")
+
     logger.info("AgentQA pronto!")
     yield
 
